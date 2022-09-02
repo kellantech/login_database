@@ -8,7 +8,7 @@ add_user(username,password)
 
 ### check credentials
 ```python
-login(username,password)
+check(username,password)
 ```
 
 

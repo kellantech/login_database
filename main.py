@@ -23,7 +23,7 @@ def add_user(uname,pwd):
 def escape(tx):
 	return tx.replace("\'","").replace("\"",'').replace("-","").replace("<",'')
 	
-def login(uname,pwd):
+def check(uname,pwd):
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
 	query = f"""SELECT *
@@ -47,7 +47,7 @@ def del_user(uname, password):
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
 	isdel = 0
-	if login(uname,password) == 1 : 
+	if check(uname,password) == 1 : 
 		c.execute(f"DELETE FROM login WHERE un='{uname}';");isdel=1
 	connection.commit()
 	if isdel==1: return 1
@@ -56,7 +56,7 @@ def del_user(uname, password):
 def update_pwd(uname, old_pwd, new_pwd):
 	connection = sqlite3.connect("login.db")
 	c=connection.cursor()
-	if login(uname,old_pwd) == 1:
+	if check(uname,old_pwd) == 1:
 		query =f"""
  UPDATE login
 SET pwd = '{new_pwd}'

@@ -16,6 +16,10 @@ check(username,password)
 ```python
 del_user(username, password)
 ```
+### update passowrd 
+```python
+update_pwd(username, old_password, new_password)
+```
 
 ### print database
 ```python

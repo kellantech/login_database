@@ -52,3 +52,17 @@ def del_user(uname, password):
 	connection.commit()
 	if isdel==1: return 1
 	else:return 0
+
+def update_pwd(uname, old_pwd, new_pwd):
+	connection = sqlite3.connect("login.db")
+	c=connection.cursor()
+	if login(uname,old_pwd) == 1:
+		query =f"""
+ UPDATE login
+SET pwd = '{new_pwd}'
+WHERE un='{uname}';
+ """
+		c.execute(query)
+		connection.commit()
+		return 1
+	else: return 0	

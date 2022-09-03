@@ -2,7 +2,7 @@
 
 ## initialize database
 ```bash
-python3 init_database.py pepper
+python3 init_db.py pepper
 ```
 replace "pepper" with a random number
 

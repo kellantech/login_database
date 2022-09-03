@@ -1,9 +1,9 @@
 # login_database
 
 ## initialize database
-
+```bash
 python3 init_database.py pepper
-
+```
 replace "pepper" with a random number
 
 ### create new user

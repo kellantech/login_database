@@ -1,7 +1,11 @@
-import hashlib,random
-def hash(str,hashlen=16):
-	salt = random.randint(1,(2**hashlen))
-	hash = hashlib.md5(str.encode("ascii")+bytes(salt)).hexdigest()
+import hashlib
+pepper = 0
+with open("pepper.txt","r") as f:
+	pepper = int(f.read().replace("\n",""))
+def hash(str):
+	global pepper
 	
-	return f"{salt}${hash}"
+	hash = hashlib.sha256(str.encode("ascii")+bytes(pepper)).hexdigest()
+	
+	return f"{hash}"
 

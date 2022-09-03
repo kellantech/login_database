@@ -1,5 +1,4 @@
 import sqlite3,hash1
-
 def does_user_exist(uname):
 	connection = sqlite3.connect("login.db")
 
@@ -12,7 +11,7 @@ def add_user(uname,pwd):
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
 	if does_user_exist(uname)==0:
-		qu = f"INSERT INTO login(un,pwd) values ('{escape(uname)}','{escape(hash1.hash(escape(pwd)))}')"
+		qu = f"INSERT INTO login(un,pwd) values ('{escape(uname)}','{(hash1.hash(escape(pwd)+escape(uname)))}')"
 		c.execute(qu)
 	connection.commit()
 
@@ -25,7 +24,7 @@ def check(uname,pwd):
 	query = f"""SELECT *
   FROM login
  WHERE un = '{escape(uname)}'
-   AND pwd  = '{escape(hash1.hash(escape(pwd)))}' LIMIT 1
+   AND pwd  = '{(hash1.hash(escape(pwd)+escape(uname)))}' LIMIT 1
 """
 	lst = (c.execute(query).fetchall())
 	if lst == []:return 0
@@ -55,10 +54,23 @@ def update_pwd(uname, old_pwd, new_pwd):
 	if check(uname,old_pwd) == 1:
 		query =f"""
  UPDATE login
-SET pwd = '{new_pwd}'
+SET pwd = '{hash1.hash(escape(new_pwd)+escape(uname))}'
 WHERE un='{uname}';
  """
 		c.execute(query)
 		connection.commit()
 		return 1
 	else: return 0	
+
+def clear_db():
+	connection = sqlite3.connect("login.db")
+	c=connection.cursor()
+
+	i = input('are you sure? ')
+	i2 = input('are you REALLY sure? ')
+	if i=='yes' and i2=='yes':
+		c.execute("DELETE FROM login;")
+	connection.commit()	
+
+add_user('kellan','b')
+add_user('k2','kk')

@@ -1,8 +1,4 @@
-import sqlite3
-def init():
-	connection = sqlite3.connect("login.db")
-	c = connection.cursor()
-	c.execute("CREATE TABLE IF NOT EXISTS login(un,pwd)")
+import sqlite3,hash1
 
 def does_user_exist(uname):
 	connection = sqlite3.connect("login.db")
@@ -16,7 +12,7 @@ def add_user(uname,pwd):
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
 	if does_user_exist(uname)==0:
-		qu = f"INSERT INTO login(un,pwd) values ('{escape(uname)}','{escape(pwd)}')"
+		qu = f"INSERT INTO login(un,pwd) values ('{escape(uname)}','{escape(hash1.hash(escape(pwd)))}')"
 		c.execute(qu)
 	connection.commit()
 
@@ -29,7 +25,7 @@ def check(uname,pwd):
 	query = f"""SELECT *
   FROM login
  WHERE un = '{escape(uname)}'
-   AND pwd  = '{escape(pwd)}' LIMIT 1
+   AND pwd  = '{escape(hash1.hash(escape(pwd)))}' LIMIT 1
 """
 	lst = (c.execute(query).fetchall())
 	if lst == []:return 0

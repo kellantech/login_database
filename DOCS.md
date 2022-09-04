@@ -1,10 +1,18 @@
 
 # login_database
 
-## initialize database
+
+## installation:
+
+### download zip: [link coming soon]()
+
+### unzip and run 
+
 ```bash
 python3 setup.py
 ```
+
+#### How to use: 
 
 ### create new user
 

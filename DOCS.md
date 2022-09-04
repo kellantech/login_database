@@ -4,7 +4,7 @@
 
 ## installation:
 
-### download zip: [link coming soon]()
+### download zip [here](https://github.com/kellantech/login_database/archive/refs/tags/dev.zip)
 
 ### unzip and run 
 

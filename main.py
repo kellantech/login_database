@@ -7,16 +7,16 @@ def does_user_exist(uname):
 	if len(ul) == 0: return 0
 	else: return 1
 		
-def add_user(uname,pwd):
+def add_user(uname,pwd,priv=1):
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
 	if does_user_exist(uname)==0:
-		qu = f"INSERT INTO login(un,pwd) values ('{escape(uname)}','{(hash1.hash(escape(pwd)+escape(uname)))}')"
+		qu = f"INSERT INTO login(un,pwd,priv) values ('{escape(uname)}','{(hash1.hash(escape(pwd)+escape(uname)))}',{int(escape(priv))})"
 		c.execute(qu)
 	connection.commit()
 
 def escape(tx):
-	return tx.replace("\'","").replace("\"",'').replace("-","").replace("<",'')
+	return str(tx).replace("\'","").replace("\"",'').replace("-","").replace("<",'')
 	
 def check(uname,pwd):
 	connection = sqlite3.connect("login.db")
@@ -28,7 +28,7 @@ def check(uname,pwd):
 """
 	lst = (c.execute(query).fetchall())
 	if lst == []:return 0
-	if lst != []:return 1
+	if lst != []:return lst[0][2]
 
 def print_db():
 	connection = sqlite3.connect("login.db")
@@ -72,5 +72,21 @@ def clear_db():
 		c.execute("DELETE FROM login;")
 	connection.commit()	
 
-add_user('kellan','b')
-add_user('k2','kk')
+def update_priv(uname,new_priv):
+	connection = sqlite3.connect("login.db")
+	c=connection.cursor()
+	query =f"""
+ UPDATE login
+SET priv = '{new_priv}'
+WHERE un='{uname}';
+ """
+	c.execute(query)
+	connection.commit()
+	return 1
+
+def get_priv(uname):
+	connection = sqlite3.connect("login.db")
+	c=connection.cursor()
+	c.execute(f"SELECT priv FROM login WHERE un={uname}")
+	try: return c.fetchall()[0]
+	except: return 0

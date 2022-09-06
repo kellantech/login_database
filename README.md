@@ -3,4 +3,4 @@
 ### a secure user management system
 
 
-see docs/HowToInstall.md for installation
+see docs/HowToInstall.md for installation info

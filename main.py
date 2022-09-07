@@ -29,14 +29,13 @@ def check(uname,pwd):
 	lst = (c.execute(query).fetchall())
 	if lst == []:return 0
 	if lst != []:return lst[0][2]
-
 def print_db():
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
 	query = """SELECT *
   FROM login"""
 	lst = (c.execute(query).fetchall())
-	print(lst)
+	[print(*a) for a in lst]
 
 def del_user(uname, password):
 	connection = sqlite3.connect("login.db")

@@ -2,8 +2,11 @@ import string,random,sqlite3
 def write_pepper(str):
 	with open("pepper.txt","a")as f:
 		f.write(str)
-
-print("welcome to the database setup wizard")
+def write_json(pm,um,umx):
+	with open('limits.json','a') as f2:
+		json = '{"uname":{"unameMAX":%s,"unameMIN":%s},"pwd":{"pwdMIN":%s}}'%(umx,um,pm)
+		f2.write(json)
+print("welcome to the database installer")
 input("press enter to get started! ")
 in1 = input("please enter a pepper, or press enter for a radndom one: ")
 if in1 == "":
@@ -18,6 +21,8 @@ else:
 	print("writing pepper...",end="")
 	write_pepper(in1)
 print("done")	
+
+write_json(input("password minimum length: "),input("username minimum length: "),input("username maximum length: "))
 
 input("press enter to finish setup")
 print('connecting to databse...',end='')

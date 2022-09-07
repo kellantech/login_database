@@ -15,17 +15,22 @@ def does_user_exist(uname):
 def add_user(uname,pwd,priv=1):
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
-	if len(uname)<=uname_max:
-		if len(uname)>=uname_min:
-			if len(pwd)>=pwd_min:
-				if does_user_exist(uname)==0:
-					qu = f"INSERT INTO login(un,pwd,priv) values ('{escape(uname)}','{(hash1.hash(escape(pwd)+escape(uname)))}',{int(escape(priv))})"
-					c.execute(qu)
-				connection.commit()
-				return 0
-			else: return 1
-		else: return 2
-	else: return 3
+	if does_user_exist(uname)==0:
+		qu = f"INSERT INTO login(un,pwd,priv) values ('{escape(uname)}','{(hash1.hash(escape(pwd)+escape(uname)))}',{int(escape(priv))})"
+		c.execute(qu)
+		connection.commit()
+		if len(uname)<=uname_max:
+			if len(uname)>=uname_min:
+				if len(pwd)>=pwd_min:
+					if does_user_exist(uname)==0:
+						qu = f"INSERT INTO login(un,pwd,priv) values ('{escape(uname)}','{(hash1.hash(escape(pwd)+escape(uname)))}',{int(escape(priv))})"
+						c.execute(qu)
+					connection.commit()
+					return 0
+				else: return 1
+			else: return 2
+		else: return 3
+	else:return 4		
 def escape(tx):
 	return str(tx).replace("\'","").replace("\"",'').replace("-","").replace("<",'')
 	

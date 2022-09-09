@@ -1,13 +1,12 @@
 import sqlite3, hash1, json, time
 
 
-def log(text):
+def log(text, l="info"):
     with open("logs.txt", "a") as f:
-        f.write(str(time.time()) + ":" + text + "\n")
-
+        f.write(str(time.time()) + ":" +f"{l}: "+ text + "\n")
 
 with open("limits.json", "r") as file:
-    limit_dict = json.load(file)
+	limit_dict = json.load(file)
 pwd_min = limit_dict["pwd"]["pwdMIN"]
 uname_min = limit_dict["uname"]["unameMIN"]
 uname_max = limit_dict["uname"]["unameMAX"]
@@ -17,7 +16,7 @@ def does_user_exist(uname):
     connection = sqlite3.connect("login.db")
 
     c = connection.cursor()
-    ul = c.execute(f"SELECT * FROM login WHERE un='{uname}'").fetchall()
+    ul = c.execute(f"SELECT * FROM login WHERE un='{escape(uname)}'").fetchall()
     if len(ul) == 0:
         return 0
     else:
@@ -88,7 +87,7 @@ def del_user(uname, password):
     c = connection.cursor()
     isdel = 0
     if check(uname, password) == 1:
-        c.execute(f"DELETE FROM login WHERE un='{uname}';")
+        c.execute(f"DELETE FROM login WHERE un='{escape(uname)}';")
         isdel = 1
     connection.commit()
     if isdel == 1:
@@ -106,7 +105,7 @@ def update_pwd(uname, old_pwd, new_pwd):
         query = f"""
  UPDATE login
 SET pwd = '{hash1.hash(escape(new_pwd)+escape(uname))}'
-WHERE un='{uname}';
+WHERE un='{escape(uname)}';
  """
         c.execute(query)
         connection.commit()
@@ -134,8 +133,8 @@ def update_priv(uname, new_priv):
     c = connection.cursor()
     query = f"""
  UPDATE login
-SET priv = '{new_priv}'
-WHERE un='{uname}';
+SET priv = '{escape(new_priv)}'
+WHERE un='{escape(uname)}';
  """
     c.execute(query)
     connection.commit()
@@ -146,7 +145,7 @@ WHERE un='{uname}';
 def get_priv(uname):
     connection = sqlite3.connect("login.db")
     c = connection.cursor()
-    c.execute(f"SELECT priv FROM login WHERE un='{uname}'")
+    c.execute(f"SELECT priv FROM login WHERE un='{escape(uname)}'")
     try:
         return c.fetchall()[0]
     except:

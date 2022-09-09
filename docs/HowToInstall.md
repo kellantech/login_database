@@ -1,5 +1,5 @@
 
-### 1. download zip [here](https://github.com/kellantech/login_database/archive/refs/tags/dev4_2.zip) or tar gz [here](https://github.com/kellantech/login_database/archive/refs/tags/dev4_2.tar.gz)
+### 1. download zip [here](https://github.com/kellantech/login_database/archive/refs/tags/rel1.zip) or tar gz [here](https://github.com/kellantech/login_database/archive/refs/tags/rel1.tar.gz)
 
 ### 2. extract files  
 

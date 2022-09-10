@@ -16,6 +16,9 @@ pwd_min = limit_dict["pwd"]["pwdMIN"]
 uname_min = limit_dict["uname"]["unameMIN"]
 uname_max = limit_dict["uname"]["unameMAX"]
 
+req_spec = True
+req_cap = True
+req_didg = False
 def does_user_exist(uname):
     connection = sqlite3.connect("login.db")
     c = connection.cursor()
@@ -26,15 +29,34 @@ def does_user_exist(uname):
         return 1
 
 def is_good_pwd(pwd):
-	res = 0
 	def char_in(char,string):
 		return (char in string)
-	if any(char_in(ch,pwd) for ch in ['!','#','@','$','%','?']):
-		if any(char.isupper() for char in pwd):
-			if any(char2.isdigit() for char2 in pwd):
-				res = 1
-	return res
-
+		
+	def lvl2(str):
+		if req_cap:
+			if any(char.isupper() for char in str):
+					return 1 
+			else: return 0	
+		else: return 1
+			
+			
+	def lvl3(str):
+		if req_didg: 
+			if any(char2.isdigit() for char2 in str):
+				return 1
+			else: return 0	
+		else: return 1 
+			
+	def lvl4(str):		
+		if req_spec:
+			if any(char_in(ch,str) for ch in ['!','#','@','$','%','?']) :
+				return 1 
+			else: return 0	
+		else: return 1
+	if lvl2(pwd)==1 and lvl3(pwd)==1 and lvl4(pwd)==1 :
+		return 1
+	else: return 0	
+	
 def add_user(uname, pwd, priv=1):
   connection = sqlite3.connect("login.db")
   c = connection.cursor()
@@ -153,4 +175,7 @@ def get_priv(uname):
     except:
         return 0
     log("get_priv called")
-
+print(is_good_pwd('Cube!1'))
+print(is_good_pwd('Cube1'))
+print(is_good_pwd('Cube!'))
+print(is_good_pwd('cube!1'))

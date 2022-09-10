@@ -4,11 +4,13 @@ with open("pepper.txt","r") as f:
 	pepper = (f.read().replace("\n",""))
 def hash(str):
 	global pepper
+	
 	hash = hashlib.sha256(str.encode("ascii")+bytes(pepper.encode('ascii'))).hexdigest()	
 	return f"{hash}"
-def log(text):
+
+def log(text, l="info"):
     with open("logs.txt", "a") as f:
-        f.write(str(time.time()) + ":" + text + "\n")
+        f.write(str(time.time()) + ":" +f"{l}: "+ text + "\n")
 
 with open("limits.json", "r") as file:
 	limit_dict = json.load(file)
@@ -18,6 +20,7 @@ uname_max = limit_dict["uname"]["unameMAX"]
 
 def does_user_exist(uname):
     connection = sqlite3.connect("login.db")
+
     c = connection.cursor()
     ul = c.execute(f"SELECT * FROM login WHERE un='{escape(uname)}'").fetchall()
     if len(ul) == 0:
@@ -25,20 +28,9 @@ def does_user_exist(uname):
     else:
         return 1
 
-def is_good_pwd(pwd):
-	res = 0
-	def char_in(char,string):
-		return (char in string)
-	if any(char_in(ch,pwd) for ch in ['!','#','@','$','%','?']):
-		if any(char.isupper() for char in pwd):
-			if any(char2.isdigit() for char2 in pwd):
-				res = 1
-	return res
-
 def add_user(uname, pwd, priv=1):
-  connection = sqlite3.connect("login.db")
-  c = connection.cursor()
-  if is_good_pwd(pwd) == 1:
+    connection = sqlite3.connect("login.db")
+    c = connection.cursor()
     if does_user_exist(uname) == 0:
         qu = f"INSERT INTO login(un,pwd,priv) values ('{escape(uname)}','{(hash(escape(pwd)+escape(uname)))}',{int(escape(priv))})"
         if len(uname) <= uname_max:
@@ -47,10 +39,12 @@ def add_user(uname, pwd, priv=1):
                     log(f"new user {uname}")
                     c.execute(qu)
                     connection.commit()
+
                     return 0
                 else:
                     log(f"new user {uname} blocked with error code 1 ")
                     return 1
+
             else:
                 log(f"new user {uname} blocked with error code 2 ")
                 return 2
@@ -60,7 +54,7 @@ def add_user(uname, pwd, priv=1):
     else:
         log(f"new user {uname} blocked with error code 4 ")
         return 4
-  else: return 5
+
 def escape(tx):
     return str(tx).replace("'", "").replace('"', "").replace("-", "").replace("<", "")
 
@@ -153,4 +147,3 @@ def get_priv(uname):
     except:
         return 0
     log("get_priv called")
-

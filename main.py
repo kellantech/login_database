@@ -175,7 +175,3 @@ def get_priv(uname):
     except:
         return 0
     log("get_priv called")
-print(is_good_pwd('Cube!1'))
-print(is_good_pwd('Cube1'))
-print(is_good_pwd('Cube!'))
-print(is_good_pwd('cube!1'))

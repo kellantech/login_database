@@ -4,7 +4,6 @@ pepper = 0
 with open("pepper.txt", "r") as f:
     pepper = f.read().replace("\n", "")
 
-
 def hash(str):
     global pepper
     hash = hashlib.sha256(
@@ -12,11 +11,9 @@ def hash(str):
     ).hexdigest()
     return f"{hash}"
 
-
 def log(text):
     with open("logs.txt", "a") as f:
         f.write(str(time.time()) + ":" + text + "\n")
-
 
 with open("config.json", "r") as file:
     limit_dict = json.load(file)
@@ -27,10 +24,6 @@ uname_max = limit_dict[0]["uname"]["unameMAX"]
 req_spec = bool(limit_dict[1]["spec"])
 req_cap = bool(limit_dict[1]["cap"])
 req_didg = bool(limit_dict[1]["num"])
-print(req_spec)
-print(req_cap)
-print(req_didg)
-
 
 def does_user_exist(uname):
     connection = sqlite3.connect("login.db")
@@ -40,7 +33,6 @@ def does_user_exist(uname):
         return 0
     else:
         return 1
-
 
 def is_good_pwd(pwd):
     def char_in(char, string):
@@ -78,7 +70,6 @@ def is_good_pwd(pwd):
     else:
         return 0
 
-
 def add_user(uname, pwd, priv=1):
     connection = sqlite3.connect("login.db")
     c = connection.cursor()
@@ -107,10 +98,8 @@ def add_user(uname, pwd, priv=1):
     else:
         return 5
 
-
 def escape(tx):
     return str(tx).replace("'", "").replace('"', "").replace("-", "").replace("<", "")
-
 
 def check(uname, pwd):
     connection = sqlite3.connect("login.db")
@@ -128,7 +117,6 @@ def check(uname, pwd):
         log(f"check uname={uname} success")
         return lst[0][2]
 
-
 def print_db():
     connection = sqlite3.connect("login.db")
     c = connection.cursor()
@@ -137,7 +125,6 @@ def print_db():
     lst = c.execute(query).fetchall()
     [print(*a) for a in lst]
     log("print_db call")
-
 
 def del_user(uname, password):
     connection = sqlite3.connect("login.db")
@@ -153,7 +140,6 @@ def del_user(uname, password):
     else:
         log(f"del user {uname} fail")
         return 0
-
 
 def update_pwd(uname, old_pwd, new_pwd):
     connection = sqlite3.connect("login.db")
@@ -172,7 +158,6 @@ WHERE un='{escape(uname)}';
         log(f"user {uname} passowrd update fail")
         return 0
 
-
 def clear_db():
     connection = sqlite3.connect("login.db")
     c = connection.cursor()
@@ -182,7 +167,6 @@ def clear_db():
         c.execute("DELETE FROM login;")
     log("database cleared")
     connection.commit()
-
 
 def update_priv(uname, new_priv):
     connection = sqlite3.connect("login.db")
@@ -197,7 +181,6 @@ WHERE un='{escape(uname)}';
     log(f"user {uname} privlage update success")
     return 1
 
-
 def get_priv(uname):
     connection = sqlite3.connect("login.db")
     c = connection.cursor()
@@ -207,3 +190,8 @@ def get_priv(uname):
     except:
         return 0
     log("get_priv called")
+
+def select_all():
+	connection = sqlite3.connect("login.db")
+	c = connection.cursor()
+	return c.execute("SELECT * from login").fetchall()

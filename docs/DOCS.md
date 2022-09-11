@@ -31,7 +31,13 @@ print_db()
 ```python
 privlage = get_priv(username)
 ```
+
 ### update privlage
 ```python
 update_priv(username,new_privlage)
+```
+
+### get whole database as nested list/tuple
+```python
+result = select_all()
 ```

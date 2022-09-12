@@ -1,5 +1,5 @@
 
-### 1. download zip [here](https://github.com/kellantech/login_database/archive/refs/tags/rel1dev2.zip) or tar gz [here](https://github.com/kellantech/login_database/archive/refs/tags/rel1dev2.tar.gz)
+### 1. download zip [here](https://github.com/kellantech/login_database/archive/refs/tags/rel1patch2.zip) or tar gz [here](https://github.com/kellantech/login_database/archive/refs/tags/rel1patch2.tar.gz)
 
 ### 2. extract files  
 

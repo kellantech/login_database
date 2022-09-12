@@ -194,4 +194,7 @@ def get_priv(uname):
 def select_all():
 	connection = sqlite3.connect("login.db")
 	c = connection.cursor()
+	log("select_all called")
 	return c.execute("SELECT * from login").fetchall()
+
+	

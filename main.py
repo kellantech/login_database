@@ -225,3 +225,10 @@ def get_all_usernames():
     for l in range(len(res)):
         ret.append(res[l][0])
     return ret
+
+
+def number_of_users():
+		connection = sqlite3.connect("login.db")
+		c = connection.cursor()
+		return c.execute("""SELECT count(*) FROM login""").fetchall() [0][0]
+	
